@@ -2,7 +2,6 @@ package model;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import org.w3c.dom.Text;
 
 public abstract class Sanitization {
     private static boolean isValid = true;
@@ -15,6 +14,10 @@ public abstract class Sanitization {
         isValid = false;
     }
 
+    public static boolean getIsValid() {
+        return isValid;
+    }
+
     public static void sanitizeName(String name) {
         if (name.isEmpty()) {
             displayAlert(1);
@@ -24,7 +27,15 @@ public abstract class Sanitization {
 
     public static double sanitizePrice(TextField priceTxt) {
         try {
-            return Double.parseDouble(priceTxt.getText());
+            double price = 0.0;
+            price = Double.parseDouble(priceTxt.getText());
+            if (price >= 0) {
+                return price;
+            } else {
+                setIsValidFalse();
+                displayAlert(3);
+                return 0.0;
+            }
         } catch (NumberFormatException e) {
             displayAlert(3);
             setIsValidFalse();
@@ -34,7 +45,15 @@ public abstract class Sanitization {
 
     public static int sanitizeStock(TextField invTxt) {
         try {
-            return Integer.parseInt(invTxt.getText());
+            int inventory = 0;
+            inventory = Integer.parseInt(invTxt.getText());
+            if (inventory >= 0) {
+                return inventory;
+            } else {
+                setIsValidFalse();
+                displayAlert(2);
+                return 0;
+            }
         } catch (NumberFormatException e) {
             displayAlert(2);
             setIsValidFalse();
@@ -44,26 +63,42 @@ public abstract class Sanitization {
 
     public static int sanitizeMin(TextField minTxt) {
         try {
-            return Integer.parseInt(minTxt.getText());
+            int min = 0;
+            min = Integer.parseInt(minTxt.getText());
+            if (min >= 0) {
+                return min;
+            } else {
+                setIsValidFalse();
+                displayAlert(5);
+                return -1;
+            }
         } catch (NumberFormatException e) {
             displayAlert(5);
             setIsValidFalse();
-            return 0;
+            return -1;
         }
     }
 
     public static int sanitizeMax(TextField maxTxt) {
         try {
-            return Integer.parseInt(maxTxt.getText());
+            int max = 0;
+            max = Integer.parseInt(maxTxt.getText());
+            if (max >= 0) {
+                return max;
+            } else {
+                setIsValidFalse();
+                displayAlert(4);
+                return -1;
+            }
         } catch (NumberFormatException e) {
             displayAlert(4);
             setIsValidFalse();
-            return 0;
+            return -1;
         }
     }
 
     public static void maxGreaterThanMin(int min, int max) {
-        if (min == -1 || max == -1) { // GOTTA FIX THIS SO -1 returns on invalid min or max
+        if (min == -1 || max == -1) {
             return;
         } else if (max < min) {
             displayAlert(6);
@@ -74,7 +109,15 @@ public abstract class Sanitization {
 
     public static int sanitizeMachineId(TextField machineIdTxt) {
         try {
-            return Integer.parseInt(machineIdTxt.getText());
+            int machineId = 0;
+            machineId = Integer.parseInt(machineIdTxt.getText());
+            if (machineId >= 0) {
+                return machineId;
+            } else {
+                setIsValidFalse();
+                displayAlert(7);
+                return 0;
+            }
         } catch (NumberFormatException e) {
             displayAlert(7);
             setIsValidFalse();
@@ -82,14 +125,10 @@ public abstract class Sanitization {
         }
     }
 
-    public static String sanitizeCompanyName(TextField companyNameTxt) {
-        String companyName = companyNameTxt.getText();
+    public static void sanitizeCompanyName(String companyName) {
         if (companyName.isEmpty()) {
             displayAlert(8);
             setIsValidFalse();
-            return "";
-        } else {
-            return companyName;
         }
     }
 
@@ -104,19 +143,19 @@ public abstract class Sanitization {
                 alert.showAndWait();
                 break;
             case 2:
-                alert.setContentText("Inventory must be an integer");
+                alert.setContentText("Inventory must be a positive integer");
                 alert.showAndWait();
                 break;
             case 3:
-                alert.setContentText("Price must be a double");
+                alert.setContentText("Price must be a positive double");
                 alert.showAndWait();
                 break;
             case 4:
-                alert.setContentText("Max must be an integer");
+                alert.setContentText("Max must be a positive integer");
                 alert.showAndWait();
                 break;
             case 5:
-                alert.setContentText("Min must be an integer");
+                alert.setContentText("Min must be a positive integer");
                 alert.showAndWait();
                 break;
             case 6:
@@ -124,7 +163,7 @@ public abstract class Sanitization {
                 alert.showAndWait();
                 break;
             case 7:
-                alert.setContentText("Machine ID must be an integer");
+                alert.setContentText("Machine ID must be a positive integer");
                 alert.showAndWait();
                 break;
             case 8:
