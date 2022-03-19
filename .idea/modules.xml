@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DeDonaPerformanceAssessment.iml" filepath="$PROJECT_DIR$/DeDonaPerformanceAssessment.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProductTracker.iml" filepath="$PROJECT_DIR$/ProductTracker.iml" />
     </modules>
   </component>
 </project>
