@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import model.Inventory;
 import model.Part;
 import model.Product;
+import model.Sanitization;
 
 import java.io.IOException;
 import java.net.URL;
@@ -119,11 +120,41 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     void onActionRemoveAssociatedPart(ActionEvent event) {
-
+        if (Sanitization.displayConfirm()) {
+            associatedParts.remove(partTableView2.getSelectionModel().getSelectedItem());
+        } else {
+            return;
+        }
     }
 
     @FXML
-    void onActionSave(ActionEvent event) {
+    void onActionSave(ActionEvent event) throws IOException {
+        int id = Integer.parseInt(idTxt.getText());
+        String name = nameTxt.getText();
+        double price = 0.0;
+        int stock = 0;
+        int min = 0;
+        int max = 0;
 
+        Sanitization.setIsValidTrue();
+
+        Sanitization.sanitizeName(name);
+        price = Sanitization.sanitizePrice(priceTxt);
+        stock = Sanitization.sanitizeStock(invTxt);
+        min = Sanitization.sanitizeMin(minTxt);
+        max = Sanitization.sanitizeMax(maxTxt);
+        Sanitization.maxGreaterThanMin(min, max);
+
+        if (Sanitization.getIsValid() == false) {
+            return;
+        }
+
+        for (int i = 0; i < Inventory.getAllProducts().size(); i++) {
+            if (Inventory.getAllProducts().get(i).getId() == id) {
+                Inventory.updateProduct(i, new Product(associatedParts, id, name, price, stock, min, max));
+            }
+        }
+
+        onActionDisplayMain(event);
     }
 }

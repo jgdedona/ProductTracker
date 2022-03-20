@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import model.Inventory;
 import model.Part;
 import model.Product;
+import model.Sanitization;
 
 import java.io.IOException;
 import java.net.URL;
@@ -100,12 +101,25 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void onActionDeletePart(ActionEvent event) {
-        Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
+        if (Sanitization.displayConfirm()) {
+            Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
+        } else {
+            return;
+        }
     }
 
     @FXML
     void onActionDeleteProduct(ActionEvent event) {
-        Inventory.deleteProduct(prodTableView.getSelectionModel().getSelectedItem());
+        if (!(prodTableView.getSelectionModel().getSelectedItem().getAllAssociatedParts().isEmpty())) {
+            Sanitization.displayAlert(11);
+            return;
+        } else {
+            if (Sanitization.displayConfirm()) {
+                Inventory.deleteProduct(prodTableView.getSelectionModel().getSelectedItem());
+            } else {
+                return;
+            }
+        }
     }
 
     @FXML
@@ -131,7 +145,12 @@ public class MainMenuController implements Initializable {
         loader.load();
 
         ModifyPartController MPController = loader.getController();
-        MPController.sendPart(partsTableView.getSelectionModel().getSelectedItem());
+        try {
+            MPController.sendPart(partsTableView.getSelectionModel().getSelectedItem());
+        } catch (NullPointerException e) {
+            Sanitization.displayAlert(9);
+            return;
+        }
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
@@ -146,8 +165,13 @@ public class MainMenuController implements Initializable {
         loader.load();
 
         ModifyProductController MPrController = loader.getController();
-        MPrController.sendProduct(prodTableView.getSelectionModel().getSelectedItem());
 
+        try {
+            MPrController.sendProduct(prodTableView.getSelectionModel().getSelectedItem());
+        } catch (NullPointerException e) {
+            Sanitization.displayAlert(10);
+            return;
+        }
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));

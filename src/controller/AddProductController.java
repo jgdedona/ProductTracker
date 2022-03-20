@@ -118,7 +118,11 @@ public class AddProductController implements Initializable {
 
     @FXML
     void onActionRemoveAssociatedPart(ActionEvent event) {
-        associatedParts.remove(partTableView2.getSelectionModel().getSelectedItem());
+        if (Sanitization.displayConfirm()) {
+            associatedParts.remove(partTableView2.getSelectionModel().getSelectedItem());
+        } else {
+            return;
+        }
     }
 
     @FXML

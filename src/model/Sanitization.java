@@ -1,7 +1,14 @@
 package model;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public abstract class Sanitization {
     private static boolean isValid = true;
@@ -104,7 +111,7 @@ public abstract class Sanitization {
             displayAlert(6);
             setIsValidFalse();
             return;
-        } // May need another else statement. Not sure.
+        }
     }
 
     public static int sanitizeMachineId(TextField machineIdTxt) {
@@ -132,6 +139,20 @@ public abstract class Sanitization {
         }
     }
 
+    public static boolean displayConfirm() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure?");
+        alert.setContentText("Deletion of any parts, products, and associated parts is permanent.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static void displayAlert(int alertType) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -139,35 +160,58 @@ public abstract class Sanitization {
 
         switch (alertType) {
             case 1:
+                alert.setHeaderText("Invalid Name");
                 alert.setContentText("There is no data present in the Name field");
                 alert.showAndWait();
                 break;
             case 2:
+                alert.setHeaderText("Invalid Inventory Entry");
                 alert.setContentText("Inventory must be a positive integer");
                 alert.showAndWait();
                 break;
             case 3:
+                alert.setHeaderText("Invalid Price Entry");
                 alert.setContentText("Price must be a positive double");
                 alert.showAndWait();
                 break;
             case 4:
+                alert.setHeaderText("Invalid Max Entry");
                 alert.setContentText("Max must be a positive integer");
                 alert.showAndWait();
                 break;
             case 5:
+                alert.setHeaderText("Invalid Min Entry");
                 alert.setContentText("Min must be a positive integer");
                 alert.showAndWait();
                 break;
             case 6:
+                alert.setHeaderText("Invalid Max and Min Entries");
                 alert.setContentText("Max must be greater than min");
                 alert.showAndWait();
                 break;
             case 7:
+                alert.setHeaderText("Invalid Machine ID Entry");
                 alert.setContentText("Machine ID must be a positive integer");
                 alert.showAndWait();
                 break;
             case 8:
+                alert.setHeaderText("Invalid Company Name");
                 alert.setContentText("There is no data present in the Company Name field");
+                alert.showAndWait();
+                break;
+            case 9:
+                alert.setHeaderText("No Part Selected");
+                alert.setContentText("You must select a part to modify");
+                alert.showAndWait();
+                break;
+            case 10:
+                alert.setHeaderText("No Product Selected");
+                alert.setContentText("You must select a product to modify");
+                alert.showAndWait();
+                break;
+            case 11:
+                alert.setHeaderText("Product Deletion Failed");
+                alert.setContentText("You cannot delete a product until you have removed all of its associated parts");
                 alert.showAndWait();
                 break;
         }
