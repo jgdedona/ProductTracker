@@ -126,16 +126,30 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void onActionDisplayModifyPart(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/ModifyPart.fxml"));
+        loader.load();
+
+        ModifyPartController MPController = loader.getController();
+        MPController.sendPart(partsTableView.getSelectionModel().getSelectedItem());
+
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ModifyPartOutsourced.fxml"));
+        Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
     }
 
     @FXML
     void onActionDisplayModifyProduct(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/ModifyProduct.fxml"));
+        loader.load();
+
+        ModifyProductController MPrController = loader.getController();
+        MPrController.sendProduct(prodTableView.getSelectionModel().getSelectedItem());
+
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ModifyProduct.fxml"));
+        Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
     }

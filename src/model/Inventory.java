@@ -89,7 +89,7 @@ public class Inventory {
 
     public static void incrementPartsIndex() { allPartsIndex++; }
 
-    public static void incrementProductsIndex() { allPartsIndex++; }
+    public static void incrementProductsIndex() { allProductsIndex++; }
 
     public static int getAllPartsIndex() { return allPartsIndex; }
 

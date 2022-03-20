@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +12,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Inventory;
+import model.Part;
+import model.Product;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,23 +26,47 @@ public class ModifyProductController implements Initializable {
 
     Stage stage;
     Parent scene;
+    ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initializing!");
+        partTableView1.setItems(Inventory.getAllParts());
+        idCol1.setCellValueFactory(new PropertyValueFactory<>("id"));
+        invLvlCol1.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        nameCol1.setCellValueFactory(new PropertyValueFactory<>("name"));
+        priceCol1.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
+    public void sendProduct(Product product) {
+        idTxt.setText(String.valueOf(product.getId()));
+        nameTxt.setText(product.getName());
+        invTxt.setText(String.valueOf(product.getStock()));
+        priceTxt.setText(String.valueOf(product.getPrice()));
+        maxTxt.setText(String.valueOf(product.getMax()));
+        minTxt.setText(String.valueOf(product.getMin()));
+
+        associatedParts.addAll(product.getAllAssociatedParts());
+        partTableView2.setItems(associatedParts);
+        idCol2.setCellValueFactory(new PropertyValueFactory<>("id"));
+        invLvlCol2.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        nameCol2.setCellValueFactory(new PropertyValueFactory<>("name"));
+        priceCol2.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
     @FXML
-    private TableColumn<?, ?> idCol1;
+    private TextField idTxt;
 
     @FXML
-    private TableColumn<?, ?> idCol2;
+    private TableColumn<Part, Integer> idCol1;
 
     @FXML
-    private TableColumn<?, ?> invLvlCol1;
+    private TableColumn<Part, Integer> idCol2;
 
     @FXML
-    private TableColumn<?, ?> invLvlCol2;
+    private TableColumn<Part, Integer> invLvlCol1;
+
+    @FXML
+    private TableColumn<Part, Integer> invLvlCol2;
 
     @FXML
     private TextField invTxt;
@@ -48,10 +78,10 @@ public class ModifyProductController implements Initializable {
     private TextField minTxt;
 
     @FXML
-    private TableColumn<?, ?> nameCol1;
+    private TableColumn<Part, String> nameCol1;
 
     @FXML
-    private TableColumn<?, ?> nameCol2;
+    private TableColumn<Part, String> nameCol2;
 
     @FXML
     private TextField nameTxt;
@@ -60,23 +90,23 @@ public class ModifyProductController implements Initializable {
     private TextField partSearchTxt;
 
     @FXML
-    private TableView<?> partTableView1;
+    private TableView<Part> partTableView1;
 
     @FXML
-    private TableView<?> partTableView2;
+    private TableView<Part> partTableView2;
 
     @FXML
-    private TableColumn<?, ?> priceCol1;
+    private TableColumn<Part, Double> priceCol1;
 
     @FXML
-    private TableColumn<?, ?> priceCol2;
+    private TableColumn<Part, Double> priceCol2;
 
     @FXML
     private TextField priceTxt;
 
     @FXML
     void onActionAddPart(ActionEvent event) {
-
+        associatedParts.add(partTableView1.getSelectionModel().getSelectedItem());
     }
 
     @FXML

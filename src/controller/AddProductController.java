@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Inventory;
+import model.Part;
+import model.Product;
+import model.Sanitization;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,20 +27,31 @@ public class AddProductController implements Initializable {
 
     Stage stage;
     Parent scene;
+    ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initializing!");
+        partTableView1.setItems(Inventory.getAllParts());
+        idCol1.setCellValueFactory(new PropertyValueFactory<>("id"));
+        invLvlCol1.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partNameCol1.setCellValueFactory(new PropertyValueFactory<>("name"));
+        priceCol1.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        partTableView2.setItems(associatedParts);
+        partIdCol2.setCellValueFactory(new PropertyValueFactory<>("id"));
+        invLvlCol2.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partNameCol2.setCellValueFactory(new PropertyValueFactory<>("name"));
+        priceCol2.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
     @FXML
-    private TableColumn<?, ?> idCol1;
+    private TableColumn<Part, Integer> idCol1;
 
     @FXML
-    private TableColumn<?, ?> invLvlCol1;
+    private TableColumn<Part, Integer> invLvlCol1;
 
     @FXML
-    private TableColumn<?, ?> invLvlCol2;
+    private TableColumn<Part, Integer> invLvlCol2;
 
     @FXML
     private TextField invTxt;
@@ -48,35 +66,46 @@ public class AddProductController implements Initializable {
     private TextField nameTxt;
 
     @FXML
-    private TableColumn<?, ?> partCol2;
+    private TableColumn<Part, Integer> partIdCol2;
 
     @FXML
-    private TableColumn<?, ?> partNameCol1;
+    private TableColumn<Part, String> partNameCol1;
 
     @FXML
-    private TableColumn<?, ?> partNameCol2;
+    private TableColumn<Part, String> partNameCol2;
 
     @FXML
     private TextField partSearchTxt;
 
     @FXML
-    private TableView<?> partTableView1;
+    private TableView<Part> partTableView1;
 
     @FXML
-    private TableView<?> partTableView2;
+    private TableView<Part> partTableView2;
 
     @FXML
-    private TableColumn<?, ?> priceCol1;
+    private TableColumn<Part, Double> priceCol1;
 
     @FXML
-    private TableColumn<?, ?> priceCol2;
+    private TableColumn<Part, Double> priceCol2;
 
     @FXML
     private TextField priceTxt;
 
     @FXML
-    void onActionAddPartToProduct(ActionEvent event) {
+    void onActionSearchOrFilterPart(ActionEvent event) {
+        if (partSearchTxt != null) {
+            try {
+                partTableView1.getSelectionModel().select(Inventory.lookupPart(Integer.parseInt(partSearchTxt.getText())));
+            } catch (NumberFormatException e) {
+                partTableView1.setItems(Inventory.lookupPart(partSearchTxt.getText()));
+            }
+        }
+    }
 
+    @FXML
+    void onActionAddPartToProduct(ActionEvent event) {
+        associatedParts.add(partTableView1.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -89,11 +118,36 @@ public class AddProductController implements Initializable {
 
     @FXML
     void onActionRemoveAssociatedPart(ActionEvent event) {
-
+        associatedParts.remove(partTableView2.getSelectionModel().getSelectedItem());
     }
 
     @FXML
-    void onActionSaveProduct(ActionEvent event) {
+    void onActionSaveProduct(ActionEvent event) throws IOException {
+        int id = Inventory.getAllProductsIndex();
+        String name = nameTxt.getText();
+        double price = 0.0;
+        int stock = 0;
+        int min = 0;
+        int max = 0;
 
+        Sanitization.setIsValidTrue();
+
+        Sanitization.sanitizeName(name);
+        price = Sanitization.sanitizePrice(priceTxt);
+        stock = Sanitization.sanitizeStock(invTxt);
+        min = Sanitization.sanitizeMin(minTxt);
+        max = Sanitization.sanitizeMax(maxTxt);
+        Sanitization.maxGreaterThanMin(min, max);
+
+        if (Sanitization.getIsValid() == false) {
+            return;
+        }
+
+        Inventory.addProduct(new Product(associatedParts, id, name, price, stock, min, max));
+
+        Inventory.incrementProductsIndex();
+
+        onActionDisplayMain(event);
     }
+
 }
