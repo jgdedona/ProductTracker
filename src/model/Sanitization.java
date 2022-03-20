@@ -34,8 +34,7 @@ public abstract class Sanitization {
 
     public static double sanitizePrice(TextField priceTxt) {
         try {
-            double price = 0.0;
-            price = Double.parseDouble(priceTxt.getText());
+            double price = Double.parseDouble(priceTxt.getText());
             if (price >= 0) {
                 return price;
             } else {
@@ -52,8 +51,7 @@ public abstract class Sanitization {
 
     public static int sanitizeStock(TextField invTxt) {
         try {
-            int inventory = 0;
-            inventory = Integer.parseInt(invTxt.getText());
+            int inventory = Integer.parseInt(invTxt.getText());
             if (inventory >= 0) {
                 return inventory;
             } else {
@@ -70,8 +68,7 @@ public abstract class Sanitization {
 
     public static int sanitizeMin(TextField minTxt) {
         try {
-            int min = 0;
-            min = Integer.parseInt(minTxt.getText());
+            int min = Integer.parseInt(minTxt.getText());
             if (min >= 0) {
                 return min;
             } else {
@@ -88,8 +85,7 @@ public abstract class Sanitization {
 
     public static int sanitizeMax(TextField maxTxt) {
         try {
-            int max = 0;
-            max = Integer.parseInt(maxTxt.getText());
+            int max = Integer.parseInt(maxTxt.getText());
             if (max >= 0) {
                 return max;
             } else {
@@ -116,8 +112,7 @@ public abstract class Sanitization {
 
     public static int sanitizeMachineId(TextField machineIdTxt) {
         try {
-            int machineId = 0;
-            machineId = Integer.parseInt(machineIdTxt.getText());
+            int machineId = Integer.parseInt(machineIdTxt.getText());
             if (machineId >= 0) {
                 return machineId;
             } else {
@@ -212,6 +207,11 @@ public abstract class Sanitization {
             case 11:
                 alert.setHeaderText("Product Deletion Failed");
                 alert.setContentText("You cannot delete a product until you have removed all of its associated parts");
+                alert.showAndWait();
+                break;
+            case 12:
+                alert.setHeaderText("No Part or Product Selected");
+                alert.setContentText("Please select a part or product to delete");
                 alert.showAndWait();
                 break;
         }

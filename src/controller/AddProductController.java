@@ -118,10 +118,9 @@ public class AddProductController implements Initializable {
 
     @FXML
     void onActionRemoveAssociatedPart(ActionEvent event) {
-        if (Sanitization.displayConfirm()) {
+        if ((!(associatedParts.isEmpty()))) {
+            Sanitization.displayConfirm();
             associatedParts.remove(partTableView2.getSelectionModel().getSelectedItem());
-        } else {
-            return;
         }
     }
 
@@ -129,18 +128,14 @@ public class AddProductController implements Initializable {
     void onActionSaveProduct(ActionEvent event) throws IOException {
         int id = Inventory.getAllProductsIndex();
         String name = nameTxt.getText();
-        double price = 0.0;
-        int stock = 0;
-        int min = 0;
-        int max = 0;
 
         Sanitization.setIsValidTrue();
 
         Sanitization.sanitizeName(name);
-        price = Sanitization.sanitizePrice(priceTxt);
-        stock = Sanitization.sanitizeStock(invTxt);
-        min = Sanitization.sanitizeMin(minTxt);
-        max = Sanitization.sanitizeMax(maxTxt);
+        double price = Sanitization.sanitizePrice(priceTxt);
+        int stock = Sanitization.sanitizeStock(invTxt);
+        int min = Sanitization.sanitizeMin(minTxt);
+        int max = Sanitization.sanitizeMax(maxTxt);
         Sanitization.maxGreaterThanMin(min, max);
 
         if (Sanitization.getIsValid() == false) {

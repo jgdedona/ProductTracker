@@ -101,24 +101,27 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void onActionDeletePart(ActionEvent event) {
-        if (Sanitization.displayConfirm()) {
+        if ((!(partsTableView.getSelectionModel().isEmpty()))) {
+            Sanitization.displayConfirm();
             Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
         } else {
-            return;
+            Sanitization.displayAlert(12);
         }
     }
 
     @FXML
     void onActionDeleteProduct(ActionEvent event) {
-        if (!(prodTableView.getSelectionModel().getSelectedItem().getAllAssociatedParts().isEmpty())) {
-            Sanitization.displayAlert(11);
-            return;
-        } else {
-            if (Sanitization.displayConfirm()) {
-                Inventory.deleteProduct(prodTableView.getSelectionModel().getSelectedItem());
-            } else {
+        try {
+            if (!(prodTableView.getSelectionModel().getSelectedItem().getAllAssociatedParts().isEmpty())) {
+                Sanitization.displayAlert(11);
                 return;
+            } else {
+                if (Sanitization.displayConfirm()) {
+                    Inventory.deleteProduct(prodTableView.getSelectionModel().getSelectedItem());
+                }
             }
+        } catch (NullPointerException e) {
+            Sanitization.displayAlert(12);
         }
     }
 
