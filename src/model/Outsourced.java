@@ -1,5 +1,7 @@
 package model;
 
+/**
+ * The Outsourced class describes parts that must be sourced from an external company. */
 public class Outsourced extends Part {
     private String companyName;
 

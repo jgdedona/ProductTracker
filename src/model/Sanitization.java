@@ -6,21 +6,30 @@ import javafx.scene.control.TextField;
 
 import java.util.Optional;
 
+/**
+ * The Sanitization class is used to sanitize any input that will be used to create or update Part and Product objects.*/
 public abstract class Sanitization {
     private static boolean isValid = true;
 
+    /**
+     * Sets the static isValid variable to true.
+     * This is used to determine if an addition or update should take place. */
     public static void setIsValidTrue() {
         isValid = true;
     }
 
-    public static void setIsValidFalse() {
-        isValid = false;
-    }
+    /**
+     * Sets the static isValid variable to false.
+     * This is used to determine if an addition or update should take place. */
+    public static void setIsValidFalse() { isValid = false; }
 
     public static boolean getIsValid() {
         return isValid;
     }
 
+    /**
+     * Determines if a name string is empty and displays an alert if so.
+     * @param name The name string to be checked. */
     public static void sanitizeName(String name) {
         if (name.isEmpty()) {
             displayAlert(1);
@@ -28,6 +37,10 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Determines if a price text field entry is a valid double and displays an alert if not.
+     * @param priceTxt The price text field to be checked.
+     * @return double */
     public static double sanitizePrice(TextField priceTxt) {
         try {
             double price = Double.parseDouble(priceTxt.getText());
@@ -45,6 +58,10 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Determines if a stock text field entry is a valid int and displays an alert if not.
+     * @param invTxt The stock text field to be checked.
+     * @return int */
     public static int sanitizeStock(TextField invTxt) {
         try {
             int inventory = Integer.parseInt(invTxt.getText());
@@ -62,6 +79,10 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Determines if a min text field entry is a valid int and displays an alert if not.
+     * @param minTxt The min text field to be checked.
+     * @return int */
     public static int sanitizeMin(TextField minTxt) {
         try {
             int min = Integer.parseInt(minTxt.getText());
@@ -79,6 +100,10 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Determines if a max text field entry is a valid int and displays an alert if not.
+     * @param maxTxt The max text field to be checked.
+     * @return int: -1 is returned for invalid entries. This is utilized in the maxGreaterThanMin function below. */
     public static int sanitizeMax(TextField maxTxt) {
         try {
             int max = Integer.parseInt(maxTxt.getText());
@@ -96,6 +121,10 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Determines if the max field is greater or equal to the min field.
+     * @param min The minimum value
+     * @param max The maximum value */
     public static void maxGreaterThanMin(int min, int max) {
         if (min == -1 || max == -1) {
             return;
@@ -106,6 +135,10 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Determines if a machineID text field entry is a valid int and displays an alert if not.
+     * @param machineIdTxt The machine ID text field to be checked.
+     * @return int */
     public static int sanitizeMachineId(TextField machineIdTxt) {
         try {
             int machineId = Integer.parseInt(machineIdTxt.getText());
@@ -123,6 +156,9 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Determines if a name string is empty and displays an alert if so.
+     * @param companyName The name string to be checked. */
     public static void sanitizeCompanyName(String companyName) {
         if (companyName.isEmpty()) {
             displayAlert(8);
@@ -130,6 +166,10 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Displays a confirmation alert.
+     * Used whenever a Part or Product object is deleted.
+     * @return boolean*/
     public static boolean displayConfirm() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
@@ -145,6 +185,9 @@ public abstract class Sanitization {
         }
     }
 
+    /**
+     * Defines all of the alert types used by the sanitization functions.
+     * @param alertType Used to determine which case to call. */
     public static void displayAlert(int alertType) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -208,6 +251,11 @@ public abstract class Sanitization {
             case 12:
                 alert.setHeaderText("No Part or Product Selected");
                 alert.setContentText("Please select a part or product to delete");
+                alert.showAndWait();
+                break;
+            case 13:
+                alert.setHeaderText("Part or Product Not Found");
+                alert.setContentText("There were no matching results for your search");
                 alert.showAndWait();
                 break;
         }

@@ -23,12 +23,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The ModifyProductController provides the control logic supporting the ModifyProduct.fxml scene.*/
 public class ModifyProductController implements Initializable {
 
     Stage stage;
     Parent scene;
     ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
+    /**
+     * The intialize method sets the starting state for the scene. Both table views are populated with
+     * the appropriate data.
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         partTableView1.setItems(Inventory.getAllParts());
@@ -38,6 +45,12 @@ public class ModifyProductController implements Initializable {
         priceCol1.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
+    /**
+     * The sendProduct function is used to auto-populate the text fields.
+     * This function is called in the MainMenuController to pass the selected product
+     * values to the ModifyProductController when the modify button is pressed.
+     * partTableView2 is populated from a copy of the associatedParts attribute of the original Product object.
+     * @param product A Product object. This is derived from Inventory.getAllProducts when the function is called. */
     public void sendProduct(Product product) {
         idTxt.setText(String.valueOf(product.getId()));
         nameTxt.setText(product.getName());
@@ -105,11 +118,18 @@ public class ModifyProductController implements Initializable {
     @FXML
     private TextField priceTxt;
 
+    /** Adds parts selected in partTableView1 to associated Parts.
+     * All parts added to associatedParts are populated in partTableView2.
+     * @param event */
     @FXML
     void onActionAddPart(ActionEvent event) {
         associatedParts.add(partTableView1.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * Displays the Main Menu scene from MainMenu.fxml when the cancel button is selected.
+     * @param event
+     * @throws IOException*/
     @FXML
     void onActionDisplayMain(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -118,6 +138,10 @@ public class ModifyProductController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Removes parts from associatedParts.
+     * All removed parts are also removed from partTableView2.
+     * @param event */
     @FXML
     void onActionRemoveAssociatedPart(ActionEvent event) {
         if ((!(associatedParts.isEmpty()))) {
@@ -126,6 +150,11 @@ public class ModifyProductController implements Initializable {
         }
     }
 
+    /**
+     * Updates an existing Product object within Inventory.allProducts utilizing the text field and table entries.
+     * Functions are called from the Sanitization class to sanitize entered data.
+     * @param event
+     * @throws IOException*/
     @FXML
     void onActionSave(ActionEvent event) throws IOException {
         int id = Integer.parseInt(idTxt.getText());

@@ -1,5 +1,7 @@
 package model;
 
+/**
+ * The InHouse class describes parts that are manufactured within the company. */
 public class InHouse extends Part {
     private int machineId;
 

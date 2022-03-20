@@ -21,11 +21,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The MainMenuController provides the control logic supporting the MainMenu.fxml scene.*/
 public class MainMenuController implements Initializable {
 
     Stage stage;
     Parent scene;
 
+    /**
+     * The intialize method sets the starting state for the scene. Both table views are populated with
+     * the appropriate data.
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         partsTableView.setItems(Inventory.getAllParts());
@@ -77,6 +84,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private TextField productSearchTxt;
 
+    /**
+     * Implements search functionality for the prodTableView.
+     * @param event */
     @FXML
     void onActionSearchOrFilterProduct(ActionEvent event) {
         if (productSearchTxt != null) {
@@ -88,6 +98,9 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Implements search functionality for the partsTableView.
+     * @param event */
     @FXML
     void onActionSearchOrFilterPart(ActionEvent event) {
         if (partSearchTxt != null) {
@@ -99,6 +112,10 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Deletes the selected part from Inventory.allParts.
+     * Deleted parts are also removed from the table view.
+     * @param event */
     @FXML
     void onActionDeletePart(ActionEvent event) {
         if ((!(partsTableView.getSelectionModel().isEmpty()))) {
@@ -109,6 +126,10 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Deletes the selected part from Inventory.allProducts.
+     * Deleted products are also removed from the table view.
+     * @param event */
     @FXML
     void onActionDeleteProduct(ActionEvent event) {
         try {
@@ -125,6 +146,10 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Loads and sets the AddPart.fxml scene when the add button is selected.
+     * @param event
+     * @throws IOException*/
     @FXML
     void onActionDisplayAddPart(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -133,6 +158,10 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Loads and sets the AddProduct.fxml scene when the add button is selected.
+     * @param event
+     * @throws IOException*/
     @FXML
     void onActionDisplayAddProduct(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -141,6 +170,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Loads and sets the ModifyPart.fxml scene when the add button is selected.
+     * The scene is automatically filled with data from the selected part.
+     * @param event
+     * @throws IOException*/
     @FXML
     void onActionDisplayModifyPart(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -161,6 +195,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Loads and sets the ModifyProduct.fxml scene when the add button is selected.
+     * The scene is automatically filled with data from the selected part.
+     * @param event
+     * @throws IOException*/
     @FXML
     void onActionDisplayModifyProduct(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
