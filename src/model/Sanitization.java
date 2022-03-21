@@ -135,6 +135,13 @@ public abstract class Sanitization {
         }
     }
 
+    public static void InvBetweenMaxAndMin(int stock, int min, int max) {
+        if (stock < min || stock > max) {
+            displayAlert(14);
+            setIsValidFalse();
+        }
+    }
+
     /**
      * Determines if a machineID text field entry is a valid int and displays an alert if not.
      * @param machineIdTxt The machine ID text field to be checked.
@@ -256,6 +263,11 @@ public abstract class Sanitization {
             case 13:
                 alert.setHeaderText("Part or Product Not Found");
                 alert.setContentText("There were no matching results for your search");
+                alert.showAndWait();
+                break;
+            case 14:
+                alert.setHeaderText("Stock outside of minimum and maximum bounds");
+                alert.setContentText("Inv must be an integer between the supplied min and max values");
                 alert.showAndWait();
                 break;
         }

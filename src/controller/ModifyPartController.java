@@ -108,6 +108,7 @@ public class ModifyPartController implements Initializable {
         int min = Sanitization.sanitizeMin(minTxt);
         int max = Sanitization.sanitizeMax(maxTxt);
         Sanitization.maxGreaterThanMin(min, max);
+        Sanitization.InvBetweenMaxAndMin(stock, min, max);
 
         if (inHouseRBtn.isSelected()) {
             int machineId = 0;
@@ -156,6 +157,7 @@ public class ModifyPartController implements Initializable {
             machineIdOrCompanyNameTxt.setText(String.valueOf(((InHouse) part).getMachineId()));
         } else {
             outsourceRBtn.setSelected(true);
+            machineIdOrCompanyNameLabel.setText("Company Name");
             machineIdOrCompanyNameTxt.setText(((Outsourced) part).getCompanyName());
         }
     }

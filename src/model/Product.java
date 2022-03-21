@@ -72,10 +72,17 @@ public class Product {
         this.max = max;
     }
 
+    /**
+     * Adds a Part object to associatedParts.
+     * @param part Part object to be added*/
     public void addAssociatedPart(Part part) {
         associatedParts.add(part);
     }
 
+    /**
+     * Removes a Part object from associatedParts
+     * @param selectedAssociatedPart Part object to be removed
+     * @return boolean*/
     public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
         return associatedParts.remove(selectedAssociatedPart);
     }

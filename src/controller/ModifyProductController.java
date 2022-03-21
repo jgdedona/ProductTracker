@@ -168,6 +168,7 @@ public class ModifyProductController implements Initializable {
         int min = Sanitization.sanitizeMin(minTxt);
         int max = Sanitization.sanitizeMax(maxTxt);
         Sanitization.maxGreaterThanMin(min, max);
+        Sanitization.InvBetweenMaxAndMin(stock, min, max);
 
         if (Sanitization.getIsValid() == false) {
             return;

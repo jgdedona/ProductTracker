@@ -14,6 +14,8 @@ import model.*;
  * which products and a variety of relevant characteristics for each
  * part and product.
  *
+ * See the Javadocs folder for the Javadocs HTML files.
+ *
  * FUTURE ENHANCEMENT:
  * This program can be enhanced through the addition of a Sales class that keeps track
  * of the sale of products throughout the month. This would present an opportunity to
